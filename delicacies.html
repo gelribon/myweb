@@ -1,0 +1,1116 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>LUZON – Delicacies</title>
+ <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Merienda, sans-serif;
+    }
+    body {
+      background: #b3c7db;
+      padding-top: 70px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: black;
+      color: white;
+      padding: 10px 20px;
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+    }
+    .brand img {
+      height: 45px;
+      width: auto;
+    }
+    .hamburger {
+      font-size: 28px;
+      cursor: pointer;
+      color: white;
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      right: -250px;
+      height: 100%;
+      width: 250px;
+      background-color: black;
+      display: flex;
+      flex-direction: column;
+      padding: 60px 0 20px 0;
+      transition: right 0.3s ease;
+      z-index: 1001;
+    }
+    .sidebar ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
+    .sidebar ul li {
+      padding: 20px;
+      text-align: center;
+    }
+    .sidebar ul li a {
+      color: #bc9864;
+      font-size: 18px;
+      transition: color 0.2s;
+      text-decoration: none;
+    }
+    .sidebar ul li a:hover {
+      color: white;
+      text-decoration: underline;
+    }
+    .sidebar.active {
+      right: 0;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      z-index: 1000;
+    }
+    .overlay.active {
+      display: block;
+    }
+
+    .about-section {
+      padding: 40px 20px;
+      text-align: center;
+    }
+    .section-title {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+    .section-description {
+      max-width: 700px;
+      margin: 0 auto 30px;
+      color: #555;
+    }
+
+    .cards {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 20px;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      padding: 20px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      width: 250px;
+      min-width: 250px;
+      flex: 0 0 auto;
+      overflow: hidden;
+      transition: transform 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+    }
+    .card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+    }
+    .card-content {
+      padding: 15px;
+    }
+    .card-title{
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+    .card-text {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 12px;
+    }
+    .btn {
+      background: #00B0BA;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+    .btn:hover{
+      background: #4dd091;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
+
+    .modal-content{
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 300px;
+      width: 100%;
+      position: relative;
+    }
+
+    .close {
+      position: absolute;
+      top: 10px; right: 15px;
+      font-size: 24px;
+      cursor: pointer;
+    }
+    .modal-items{
+      display: grid;
+      grid-template-columns: repeat(auto-fill,minmax(150px,1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+    .modal-item img{
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .modal-item img:hover {
+      transform: scale(1.05);
+    }
+    .modal-desc {
+      font-size: 13px;
+      color: #444;
+      margin-top: 5px;
+    }
+
+    .enlarged {
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%) scale(1.2);
+      max-width: 90%;
+      max-height: 90%;
+      z-index: 1000;
+      box-shadow: 0 0 20px rgba(0,0,0,0.8);
+      border-radius: 10px;
+      cursor: pointer;
+      animation: pop 0.3s ease;
+    }
+
+	{
+      from { transform: translate(-50%, -50%) scale(0.7); opacity: 0; }
+      to { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+    }
+
+
+    .footer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: black;
+      color: white;
+      padding: 10px 15px;
+      width: 100%;
+      height:50px;
+      position: fixed;
+      bottom: 0;
+    }
+    .footer img {
+      width: 30px;
+      height: 30px;
+      margin: 0 5px;
+    }
+@media (max-width: 768px) {
+  nav {
+    position: relative;
+    width: 100%;
+    height: auto;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 15px 10px;
+  }
+
+  nav h1 {
+    margin: 0;
+    font-size: 1.5rem;
+  }
+
+  nav a {
+    padding: 10px;
+    font-size: 0.9rem;
+    flex: 1;
+  }
+
+  main {
+    margin-left: 0;
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    margin: 100px auto 60px;
+    padding: 20px;
+    max-width: 95%;
+  }
+
+  main h2 {
+    font-size: 2rem;
+  }
+
+  main p {
+    font-size: 1rem;
+  }
+
+  footer.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    margin-left: 0;
+    left: 0;
+    padding: 6px;
+    font-size: 0.75rem;
+    background: rgba(0,0,0,0.9);
+  }
+
+  .footer-icons a {
+    font-size: 16px;
+  }
+}
+
+
+  </style>
+
+</head>
+<body>
+
+<div class="overlay" id="overlay"></div>
+
+<header>
+  <div class="brand"><img src="logoforweb.png" alt="Logo"></div>
+  <div class="hamburger" id="hamburger">&#9776;</div>
+</header>
+
+</div>
+
+<nav class="sidebar" id="sidebar">
+  <ul>
+    <li><a href="riboninde.html">Home</a></li>
+    <li><a href="abouttttmo.html">About</a></li>
+    <li><a href="delicacies.html" class="active">Delicacies</a></li>
+    <li><a href="contact us.html">Contact Us</a></li>
+  </ul>
+</nav>
+
+<section class="about-section">
+  <h2 class="section-title">Famous Luzon Delicacies</h2>
+  <p class="section-description">Explore the unique and delicious delicacies from Luzon!</p>
+
+  <h2 class="section-title">Region 1</h2>
+  <div class="cards">
+    <div class="card">
+      <img src="enpanada.jpg" alt="Empanada">
+      <div class="card-content">
+        <h3 class="card-title">Empanada</h3>
+        <p class="card-text">Empanada is a popular Filipino street food, known for its vibrant orange color and savory filling.</p>
+        <button class="btn" onclick="openModal('modal1')">Learn More</button>
+      </div>
+    </div>
+
+
+    <div class="card">
+      <img src="bagnet1.jpg" alt="Bagnet">
+      <div class="card-content">
+        <h3 class="card-title">Bagnet</h3>
+        <p class="card-text">Bagnet is a deep fried crispy pork belly dish that is similar to lechon kawali.</p>
+        <button class="btn" onclick="openModal('modal2')">Learn More</button>
+      </div>
+    </div>
+
+
+    <div class="card">
+      <img src="viganlonggg.jpg" alt="Longganisa">
+      <div class="card-content">
+        <h3 class="card-title">Ilocos Sur Longganisa</h3>
+        <p class="card-text">These Ilocos Sur flavorful sausages (Longganisa) are a staple in Vigan.</p>
+        <button class="btn" onclick="openModal('modal3')">Learn More</button>
+      </div>
+    </div>
+
+
+    <div class="card">
+      <img src="Tupig-region1.jpg" alt="Tupig">
+      <div class="card-content">
+        <h3 class="card-title">Tupig</h3>
+        <p class="card-text">Tupig is a traditional Filipino rice cake from northwestern Luzon, particularly Pangasinan.</p>
+        <button class="btn" onclick="openModal('modal4')">Learn More</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<div class="modal" id="modal1">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('modal1')">&times;</span>
+    <h2>Ilocos Empanada</h2>
+    <div class="modal-items">
+      <div class="modal-item">
+        <img src="dshusdvsujdjv.jpg" alt="Empanada">
+        <p class="modal-desc">It's characterized by a crispy, deep-fried rice flour shell and a flavorful mixture of shredded green papaya, longganisa, and egg.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modal2">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('modal2')">&times;</span>
+    <h2>Bagnet</h2>
+    <div class="modal-items">
+      <div class="modal-item">
+        <img src="bagnet2.jpg" alt="Bagnet">
+        <p class="modal-desc">Bagnet comes from Ilocos and is considered one of the top favorites. Best enjoyed with bagoong monamon (fermented anchovy dip).</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modal3">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('modal3')">&times;</span>
+    <h2>Longganisa</h2>
+    <div class="modal-items">
+      <div class="modal-item">
+        <img src="longgggggggg.jpg" alt="Longganisa">
+        <p class="modal-desc">It is made with ground pork marinated in a blend of spices. Vigan longganisa, known for its flavorful, garlicky taste.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modal4">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('modal4')">&times;</span>
+    <h2>Tupig</h2>
+    <div class="modal-item">
+      <div class="modal-item">
+        <img src="tupigggggg.jpg" alt="Tupig">
+        <p class="modal-desc">Tupig is known for its grilled, chewy texture and sweet flavor. It's made with glutinous rice flour, coconut milk, sugar, and young coconut strips, wrapped in banana leaves and cooked over charcoal.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="about-section">
+  <h2 class="section-title">Region II</h2>
+  <div class="cards">
+    <div class="card">
+      <img src="binalayregion2.jpg" alt="Binallay">
+      <div class="card-content">
+        <h3 class="card-title">Binallay</h3>
+        <p class="card-text">Binallay (Isabela) This delicacy is made from glutinous rice flour. </p>
+        <button class="btn" onclick="openModal('modal5')">Learn More</button>
+      </div>
+    </div>
+
+
+    <div class="card">
+      <img src="chicharabo.region2.jpeg" alt="Chicharabao">
+      <div class="card-content">
+        <h3 class="card-title">Chicharabao</h3>
+        <p class="card-text">Chicharabao is a unique Filipino snack from Cagayan, Philippines, </p>
+        <button class="btn" onclick="openModal('modal6')">Learn More</button>
+      </div>
+    </div>
+
+
+    <div class="card">
+      <img src="lunisadobo.jpg" alt="Lunis">
+      <div class="card-content">
+        <h3 class="card-title">Lunis</h3>
+        <p class="card-text">Lunis(batanes) this is a different version of the popular Filipino dish, Adobo because Lunis is rather served dry.</p>
+        <button class="btn" onclick="openModal('modal7')">Learn More</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="Buridibud (1).jpg" alt="Buridibud">
+      <div class="card-content">
+        <h3 class="card-title">Buridibud</h3>
+        <p class="card-text">Buridibud (Nueva Vizcaya) is a vegetable soup dish similar to dinengdeng.</p>
+        <button class="btn" onclick="openModal('modal8')">Learn More</button>
+      </div>
+    </div>
+<div class="card">
+      <img src="pansitcabagan.region2.jpg" alt="Pancit Cabagan">
+      <div class="card-content">
+        <h3 class="card-title">Pancit Cabagan</h3>
+        <p class="card-text">Pancit Cabagan (Quirino) is a traditional type of pancit originating from Cabagan.</p>
+        <button class="btn" onclick="openModal('modal9')">Learn More</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<div class="modal" id="modal5">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('modal5')">&times;</span>
+    <h2>Binallay</h2>
+    <div class="modal-items">
+      <div class="modal-item">
+        <img src="binallayyy.webp" alt="Binallay">
+        <p class="modal-desc">Binallay (Isabela) This delicacy is made from glutinous rice flour, steamed in banana leaves, and served with a sauce made from coconut milk and raw sugar. It's often enjoyed during Holy Week.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modal6">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('modal6')">&times;</span>
+    <h2>Chicharabao</h2>
+    <div class="modal-items">
+      <div class="modal-item">
+        <img src="chicharabao.jpg" alt="Chicharabao">
+        <p class="modal-desc">Chicharabao is a unique Filipino snack from Cagayan, Philippines, that is made from carabao (water buffalo) skin, rather than the usual pork skin. It's a variationof the popular "chicharon," which is typically madefrom deep-fried pork belly or rind.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modal7">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('modal7')">&times;</span>
+    <h2>Lunis</h2>
+    <div class="modal-items">
+      <div class="modal-item">
+        <img src="lunis.region2.jpg" alt="Lunis">
+        <p class="modal-desc">Lunis (Batanes) this is a different version of the popular Filipino dish, Adobo because Lunis is rather served dry. Lasting for quite a while, this traditional dish is made of pork cooked with rock salt until its fat is rendered and it turns golden brown.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modal8">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('modal8')">&times;</span>
+    <h2>Buridibud</h2>
+    <div class="modal-item">
+      <div class="modal-item">
+        <img src="buridibud.jpg" alt="Buridibud">
+        <p class="modal-desc">Buridibud (Nueva Vizcaya) is a vegetable soup dish similar to dinengdeng, the main difference is that this dish uses sweet potatoes as its main ingredient where it is cooked to the point that it’s so soft it breaks down with the soup giving it a thicker texture.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal" id="modal9">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('modal9')">&times;</span>
+    <h2>Pancit Cabagan</h2>
+    <div class="modal-item">
+      <div class="modal-item">
+        <img src="pansittt.jpg" alt="Pancit Cabagan">
+        <p class="modal-desc">The dish is usually made with a combination of lechon carajay (crispy pork belly that's boiled with spices and deep-fried), egg noodles, quail eggs, carrots, bell peppers, parsley, pork shoulder, cabbage, garlic, beef stock, soy sauce, fish sauce, scallions, oil, and black pepper.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<section class="about-section">
+  <h2 class="section-title">Region III</h2>
+  <div class="cards">
+    <div class="card">
+      <img src="belekoy.region3.jpg" alt="Belekoy">
+      <div class="card-content">
+        <h3 class="card-title">Belekoy</h3>
+        <button class="btn" onclick="openModal('modal10')">Learn More</button>
+      </div>
+    </div>
+
+
+    <div class="card">
+      <img src="tinapa.jpg" alt="Tinapa">
+      <div class="card-content">
+        <h3 class="card-title">Tinapa</h3>
+        <button class="btn" onclick="openModal('modal11')">Learn More</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="tocino.region3.jpg" alt="Tocino">
+      <div class="card-content">
+        <h3 class="card-title">Tocino</h3>
+        <button class="btn" onclick="openModal('modal13')">Learn More</button>
+      </div>
+    </div>
+   <div class="card">
+      <img src="cablongggg.jpg" alt="Cabanatuan Longganisa">
+      <div class="card-content">
+        <h3 class="card-title">Cabanatuan Longganisa</h3>
+        <button class="btn" onclick="openModal('modal14')">Learn More</button>
+      </div>
+    </div>
+   <div class="card">
+      <img src="aaro.region3.jpg" alt="Aaro">
+      <div class="card-content">
+        <h3 class="card-title">Aaro</h3>
+        <button class="btn" onclick="openModal('modal15')">Learn More</button>
+      </div>
+    </div>
+</section>
+   <div class="modal" id="modal10">
+    <div class="modal-content">
+    <span class="close" onclick="closeModal('modal10')">&times;</span>
+    <h2>Belekoy</h2>
+    <div class="modal-items">
+      <div class="modal-item">
+        <img src="belekoy.region3.jpg" alt="Belekoy">
+        <p class="modal-desc">Belekoy is a Filipino delicacy originating from Bulacan, Philippines. It's a sweet confection made with flour, sugar, sesame seeds, and vanilla</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modal11">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('modal11')">&times;</span>
+    <h2>Tinapa</h2>
+    <div class="modal-items">
+      <div class="modal-item">
+        <img src="tinapa.jpg" alt="Tinapa">
+        <p class="modal-desc">Tinapa (Tarlac) is a Filipino term for smoked fish, a popular and versatile dish known for its distinct smoky flavor and long shelf life. It's commonly made by smoking either galunggong(scads) or bangus (milkfish).</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modal13">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('modal13')">&times;</span>
+    <h2>Tocino</h2>
+    <div class="modal-item">
+      <div class="modal-item">
+        <img src="Tocino.jpg" alt="Tocino">
+        <p class="modal-desc">Tupig is known for its grilled, chewy texture and sweet flavor. It's made with glutinous rice flour, coconut milk, sugar, and young coconut strips, wrapped in banana leaves and cooked over charcoal.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal" id="modal14">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('modal14')">&times;</span>
+    <h2>Cabanatuan Longganisa</h2>
+    <div class="modal-item">
+      <div class="modal-item">
+        <img src="cablongggg.jpg" alt="Cabanatuan Longganisa">
+        <p class="modal-desc">Cabanatuan longganisa, also known as batutay, is a distinctive Filipino sausage from Cabanatuan, Nueva Ecija, made with ground beef instead of the usual pork, giving it a unique, sweet-and-savory flavor profile that balances the two</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal" id="modal15">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('modal15')">&times;</span>
+    <h2>Aaro</h2>
+    <div class="modal-item">
+      <div class="modal-item">
+        <img src="aaro.region3.jpg" alt="Aaro">
+        <p class="modal-desc">Aararo is a common giveaway in Bataan. As the name suggests, these cookies are made of arrowroot flour, which gives it a distinct delicate and powdery texture..</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<section class="about-section">
+  <h2 class="section-title">Region IV-A</h2>
+  <div class="cards">
+    <div class="card">
+      <img src="pancit pucit.regionIV-A.jpg" alt="Pansit Pusit">
+      <div class="card-content">
+        <h3 class="card-title">Pansit Pusit</h3>
+        <button class="btn" onclick="openModal('modal16')">Learn More</button>
+      </div>
+    </div>
+    <div class="card">
+      <img src="bulaloooo.jpg" alt="Bulalo">
+      <div class="card-content">
+        <h3 class="card-title">Bulalo</h3>
+        <button class="btn" onclick="openModal('modal17')">Learn More</button>
+      </div>
+    </div>
+    <div class="card">
+      <img src="minaluto.region4A.jpg" alt="Minaluto">
+      <div class="card-content">
+        <h3 class="card-title">Minaluto</h3>
+        <button class="btn" onclick="openModal('modal18')">Learn More</button>
+      </div>
+    </div>
+    <div class="card">
+      <img src="pancit-habhab. region4-a.jpg" alt="Pancit Habhab">
+      <div class="card-content">
+        <h3 class="card-title">Pancit Habhab</h3>
+        <button class="btn" onclick="openModal('modal19')">Learn More</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<div class="modal" id="modal16">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('modal16')">&times;</span>
+    <h2>Pancit Pusit</h2>
+    <div class="modal-items">
+      <div class="modal-item">
+        <img src="pancit pucit.regionIV-A.jpg" alt="Pancit Pusit">
+        <p class="modal-desc">Pancit Pusit, also known as Pancit Choca en su Tinta, is a signature Caviteño noodle dish known for its striking dark hue and rich, savory flavor derived from squid ink. It's a local specialty, originating from Cavite, where fresh seafood is abundant.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal" id="modal17">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('modal17')">&times;</span>
+    <h2>Bulalo</h2>
+    <div class="modal-items">
+      <div class="modal-item">
+        <img src="bulaloooo.jpg" alt="Bulalo">
+        <p class="modal-desc">A staple of the Batangueno diet is Bulalo or Beef Shank  Soup. Because Batangas is located on an elevated plateau, this soup is ideal for boosting your energy and keeping you warm in the chillier weather.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal" id="modal18">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('modal18')">&times;</span>
+    <h2>Minaluto</h2>
+    <div class="modal-item">
+      <div class="modal-item">
+        <img src="minaluto.region4A.jpg" alt="Minaluto">
+        <p class="modal-desc">Minaluto dish ng Balaw-Balaw Restaurant Angono, Rizal. Minaluto is a local version of Spanish Paella. Its rice served with pork, chicken and seafood such as squid, shrimp and crabs, salted egg and various vegetables.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal" id="modal19">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('modal19')">&times;</span>
+    <h2>Pancit Habhab</h2>
+    <div class="modal-item">
+      <div class="modal-item">
+        <img src="pancit-habhab. region4-a.jpg" alt="Pancit Habhab">
+        <p class="modal-desc">Pancit Habhab is a signature Quezon delicacy, specifically from Lucban, served on a banana leaf and eaten directly without utensils, with its name mimicking the sound of slurping or "habhabing".</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<section class="about-section">
+  <h2 class="section-title">Region IV-B</h2>
+  <div class="cards">
+    <div class="card">
+      <img src="tamalis.4-b.jpg" alt="Suman sa Lihiya">
+      <div class="card-content">
+        <h3 class="card-title">Suman sa Lihiya</h3>
+        <button class="btn" onclick="openModal('modal20')">Learn More</button>
+      </div>
+    </div>
+    <div class="card">
+      <img src="occidental.jpg" alt="Adobong Pugita">
+      <div class="card-content">
+        <h3 class="card-title">Adobong Pugita</h3>
+        <button class="btn" onclick="openModal('modal21')">Learn More</button>
+      </div>
+    </div>
+    <div class="card">
+      <img src="pinahiran.region4B.jpg" alt="Pinahiran">
+      <div class="card-content">
+        <h3 class="card-title">Pinahiran</h3>
+        <button class="btn" onclick="openModal('modal22')">Learn More</button>
+      </div>
+    </div>
+    <div class="card">
+      <img src="Sarsang-na-Uyang-in-romblon.jpg" alt="Sarsa na Uyang">
+      <div class="card-content">
+        <h3 class="card-title">Sarsa na Uyang</h3>
+        <button class="btn" onclick="openModal('modal23')">Learn More</button>
+      </div>
+    </div>
+<div class="card">
+      <img src="tamilok.jpg" alt="Tamilok">
+      <div class="card-content">
+        <h3 class="card-title">Tamilok</h3>
+        <button class="btn" onclick="openModal('modal24')">Learn More</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<div class="modal" id="modal20">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('modal20')">&times;</span>
+    <h2>Suman sa Lihiya</h2>
+    <div class="modal-items">
+      <div class="modal-item">
+        <img src="tamalis.4-b.jpg" alt="Suman sa Lihiya">
+        <p class="modal-desc">Suman sa lihiya  type of sticky rice cake unique to Oriental Mindoro. This delicacy is made from glutinous rice, lye water, and is wrapped in banana leaves, often served with a topping of fresh coconut and sugar or a coconut caramel sauce called latik.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal" id="modal21">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('modal21')">&times;</span>
+    <h2>Adobong Pugita</h2>
+    <div class="modal-items">
+      <div class="modal-item">
+        <img src="occidental.jpg" alt="Adobong Pugita">
+        <p class="modal-desc">Adobong pugita is a Filipino specialty originating from Occidental Mindoro. This adobo dish is made with mature octopus that's cooked in a combination of vinegar and soy sauce. Other common ingredients include garlic, onions, oil, and bay leaves for flavoring.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modal22">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('modal22')">&times;</span>
+    <h2>Pinahiran</h2>
+    <div class="modal-items">
+      <div class="modal-item">
+        <img src="pinahiran.region4B.jpg" alt="Pinahiran">
+        <p class="modal-desc">Similar to bibingkang malagkit of mainland Luzon, Pinahiran is another kakanin from Marinduque, particularly from Santa Cruz. Sometimes called bibingkang pinahiran, it is a large cake made from glutinous rice, coconut milk and brown sugar that looks and tastes more like biko than a typical bibingka. A sweet syrup is spread over the top of this dessert, hence its name meaning “coated” or “smeared”</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modal23">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('modal23')">&times;</span>
+    <h2>Sarsa na Uyang</h2>
+    <div class="modal-item">
+      <div class="modal-item">
+        <img src="Sarsang-na-Uyang-in-romblon.jpg" alt="Sarsa na Uyang">
+        <p class="modal-desc">Romblon is known for Sarsa (or Sarsa na uyang), a unique delicacy made from pounded freshwater shrimp mixed with coconut, chili, and spices, then wrapped in coconut leaves and boiled in coconut milk.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal" id="modal24">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('modal24')">&times;</span>
+    <h2>Tamilok</h2>
+    <div class="modal-item">
+      <div class="modal-item">
+        <img src="tamilok.jpg" alt="Tamilok">
+        <p class="modal-desc">Tamilok, a slimy, shell-less saltwater clam also known as the "woodworm," is a Palawan delicacy harvested from dead mangrove wood. It's typically eaten raw or marinated with vinegar, chilies, and onions, and is considered healthy and rich in vitamins.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<section class="about-section">
+  <h2 class="section-title">Region V</h2>
+    <div class="cards">
+     <div class="card">
+      <img src="kinaluko.region5.jpg" alt="Kinaluko">
+      <div class="card-content">
+        <h3 class="card-title">Kinaluko</h3>
+        <button class="btn" onclick="openModal('modal25')">Learn More</button>
+      </div>
+    </div>
+<div class="card">
+      <img src="laing.region5.jpeg" alt="Catandungan Laing">
+      <div class="card-content">
+        <h3 class="card-title">Catandungan Laing</h3>
+        <button class="btn" onclick="openModal('modal26')">Learn More</button>
+      </div>
+    </div>
+<div class="card">
+      <img src="hinagum.jpeg" alt="Hinagom">
+      <div class="card-content">
+        <h3 class="card-title">Hinagom</h3>
+        <button class="btn" onclick="openModal('modal27')">Learn More</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<div class="modal" id="modal25">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('modal25')">&times;</span>
+    <h2>Kinaluko</h2>
+    <div class="modal-item">
+      <div class="modal-item">
+        <img src="kinaluko.region5.jpg" alt="Kinaluko">
+        <p class="modal-desc">Kinaluko, a delicacy from Masbate, is a sweet treat made from carabao' milk and sugar, similar to pastillas but with a firmer texture.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal" id="modal26">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('modal26')">&times;</span>
+    <h2>Catandungan Laing</h2>
+    <div class="modal-item">
+      <div class="modal-item">
+        <img src="laing.region5.jpeg" alt="Catandungan Laing">
+        <p class="modal-desc">"Catandungan Laing" likely refers to Laing, a popular Bicolano dish, specifically associated with the province of Catanduanes. Laing is a spicy and savory dish made with taro leaves, coconut milk, chilies, and often meat or seafood. The term "Catandungan" is likely used to specify its origin or connection to Catanduanes, a province in the Bicol region.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal" id="modal27">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('modal27')">&times;</span>
+    <h2>Hinagom</h2>
+    <div class="modal-item">
+      <div class="modal-item">
+        <img src="hinagom_zps0vs9497k.jpg" alt="Hinagom">
+        <p class="modal-desc">Hinagom or Hinagum of Sorsogon recipe is simple, it’s made from freshly harvested rice that’s pounded, roasted in a pan, then pounded again in a mortar mixed with coconut meat and sugar before wrapping in leaves. It tastes quite similar to Espasol of Laguna.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<section class="about-section">
+  <h2 class="section-title">Cordillera Administrative Region (CAR)</h2>
+  <div class="cards">
+    <div class="card">
+      <img src="pinalatan.CAR.jpg" alt="Pinalatan">
+      <div class="card-content">
+        <h3 class="card-title">Pinalatan</h3>
+        <button class="btn" onclick="openModal('modal28')">Learn More</button>
+      </div>
+    </div>
+
+
+    <div class="card">
+      <img src="car.binungor.jpg" alt="Binungor">
+      <div class="card-content">
+        <h3 class="card-title">Binungor</h3>
+        <button class="btn" onclick="openModal('modal29')">Learn More</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="pinikpikan.webp" alt="Pinikpikan">
+      <div class="card-content">
+        <h3 class="card-title">Pinikpikan</h3>
+        <button class="btn" onclick="openModal('modal30')">Learn More</button>
+      </div>
+    </div>
+<div class="card">
+      <img src="pinunig.regionCar.jpg" alt="Pinuneg">
+      <div class="card-content">
+        <h3 class="card-title">Pinuneg</h3>
+        <button class="btn" onclick="openModal('modal31')">Learn More</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<div class="modal" id="modal28">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('modal28')">&times;</span>
+    <h2>Pinalatan</h2>
+    <div class="modal-items">
+      <div class="modal-item">
+        <img src="pinalatan.CAR.jpg" alt="Pinalatan">
+        <p class="modal-desc">Pinalatan is one of the most dish also they served. Apayao people like most chili foods, which this food has, and most of all it taste good and beyond its affordable!</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modal29">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('modal29')">&times;</span>
+    <h2>Binungor</h2>
+    <div class="modal-items">
+      <div class="modal-item">
+        <img src="car.binungor.jpg" alt="Binungor">
+        <p class="modal-desc">Binungor is a traditional Kalinga 
+dish, known for its spiciness and unique combination of ingredients. It's a vegetable and snail stew featuring agurong (a type of snail), bamboo shoots, mushrooms, and chili peppers, often cooked with local vegetables and sometimes with a bit of fermented fish for added flavor.</p>      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modal30">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('modal30')">&times;</span>
+    <h2>Pinikpikan</h2>
+    <div class="modal-item">
+      <div class="modal-item">
+        <img src="pinikpikan.webp" alt="Pinikpikan">
+        <p class="modal-desc">Pinikpikan is a popular dish in the Mountain Province and other parts of the Cordillera region of the Philippines. It is often served at special occasions, such as weddings, festivals, and gatherings. Pinikpikan is also a symbol of the region’s rich culture and heritage</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal" id="modal31">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('modal31')">&times;</span>
+    <h2>Pinuneg</h2>
+    <div class="modal-item">
+      <div class="modal-item">
+        <img src="pinunig.regionCar.jpg" alt="Pinuneg">
+        <p class="modal-desc">Pinuneg is a Filipino blood sausage originating from the Igorots. It is made with pig's blood (sometimes cow's or carabao's blood), minced pork fat, salt, red onions, ginger, and garlic stuffed into a casing made from pig's small intestine. It is traditionally prepared during pig sacrifice ceremonies.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<section class="about-section">
+  <h2 class="section-title">National Capital Region (NCR)</h2>
+  <div class="cards">
+    <div class="card">
+      <img src="nationalcr.jpg" alt="Crispy Pata">
+      <div class="card-content">
+        <h3 class="card-title">Crispy Pata</h3>
+        <button class="btn" onclick="openModal('modal32')">Learn More</button>
+      </div>
+    </div>
+
+
+    <div class="card">
+      <img src="NCR.jpg" alt="Pancit">
+      <div class="card-content">
+        <h3 class="card-title">Pancit</h3>
+        <button class="btn" onclick="openModal('modal33')">Learn More</button>
+      </div>
+    </div>
+
+
+    <div class="card">
+      <img src="karekare.jpg" alt="Kare-Kare">
+      <div class="card-content">
+        <h3 class="card-title">Kare-Kare</h3>
+        <button class="btn" onclick="openModal('modal34')">Learn More</button>
+      </div>
+    </div>
+</section>
+
+
+<div class="modal" id="modal32">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('modal32')">&times;</span>
+    <h2>Crispy Pata</h2>
+    <div class="modal-items">
+      <div class="modal-item">
+        <img src="nationalcr.jpg" alt="Crispy Pata">
+	<p class="modal-desc">Crispy pata is one of themost common Filipino dishes served on special occasions. It consists of a whole pork leg that is cooked until tender. It is then dried and deep-fried until golden brown and crispy. The leg is usually cooked alongside various spices such as bay leaves and peppercorns.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modal33">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('modal33')">&times;</span>
+    <h2>Pancit</h2>
+    <div class="modal-items">
+      <div class="modal-item">
+        <img src="NCR.jpg" alt="Pancit">
+	<p class="modal-desc">Pancit is a staple Filipino dish found at numerous feasts and celebrations, consisting of stir-fried noodles with meat and vegetables such as chicken, pork, shrimp, celery, carrots, onions, garlic, and cabbage.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modal34">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('modal34')">&times;</span>
+    <h2>Kare-Kare</h2>
+    <div class="modal-items">
+      <div class="modal-item">
+        <img src="karekare.jpg" alt="Kare-Kare">
+        <p class="modal-desc">Kare-kare is a traditional stew consisting of meat such as tripe, pork leg, ox tail, goat or chicken, vegetables, and a thick, savory peanut sauce flavored with annatto seeds. Shrimp paste (bagoong) is often served on the side in order to enhance the flavors of the dish.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<footer class="footer">
+  <a href="https://www.facebook.com/princessangelribon"><img src="facebook_icon.jpg" alt="Facebook" style="width: 35px;"></a>
+  <a href="https://www.instagram.com/yessesss.itsgel/"><img src="instagram_icon.jpg" alt="Instagram" style="width: 35px;"></a>
+  <a href="https://www.tiktok.com/@angel_ribon?_t=ZS-8zWHPKqdKlN&_r=1"><img src="tiktok_icon.jpg" alt="Tiktok" style="width: 35px;"></a>
+  <p>This website is for project purposes only.</p>
+</footer>
+
+</body>
+  
+<script>
+  const hamburger = document.getElementById('hamburger');
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('overlay');
+
+  hamburger.addEventListener('click', () => {
+    sidebar.classList.add('active');
+    overlay.classList.add('active');
+  });
+
+  overlay.addEventListener('click', () => {
+    sidebar.classList.remove('active');
+    overlay.classList.remove('active');
+  });
+
+  function openModal(id) {
+    document.getElementById(id).style.display = "flex";
+  }
+  function closeModal(id) {
+    document.getElementById(id).style.display = "none";
+  }
+  window.onclick = function(event) {
+    let modals = document.querySelectorAll(".modal");
+    modals.forEach(m => {
+      if (event.target.classList.contains("modal")) {
+        event.target.style.display = "none";
+      }
+    });
+  }
+</script>
+</body>
+</html>

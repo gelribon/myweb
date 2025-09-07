@@ -1,0 +1,306 @@
+﻿<!doctype>
+<html>
+<head>
+    <title>LUZON</title>
+    <style type="text/css">
+        {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Times New Roman', serif;
+            text-decoration: none;
+        }
+
+        body {
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .navbar {
+            position: fixed;
+            background: black;
+            font-family: Merienda;
+            padding: 15px;
+        }
+
+        .navdiv {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            height: 50px;
+            width: auto;
+            transform: translateX(20px);
+        }
+
+        li {
+            list-style: none;
+            display: inline-block;
+        }
+
+        li a {
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            margin-right: 25px;
+        }
+
+        button {
+            background-color: white;
+            margin-left: 10px;
+            border-radius: 10px;
+            padding: 10px;
+            width: 90px;
+        }
+
+        button a {
+            color: black;
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        .img1, .img2, .image3 {
+	    display: block;
+            width: 102%;
+            height: auto;
+	    margin:0;
+	    padding:-5;
+	    position: relative;
+            z-index: -1;
+        }
+	
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: black;
+            color: white;
+            padding: 10px 15px;
+            width: 98%;
+	    position: fixed;
+	    top: 0;
+	    z-index: 4000;
+        }
+
+        .brand {
+            margin-left: 15px;
+        }
+
+        .brand img {
+            height: 45px;
+            width: auto;
+            display: block;
+        }
+
+        .hamburger {
+            font-size: 28px;
+            cursor: pointer;
+	    color: white;
+	    z-index: 6000;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -250px;
+            height: 100%;
+            width: 250px;
+            background-color: black;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 60px 0 20px 0;
+            transition: right 0.3s ease;
+            z-index: 3000;
+        }
+
+        .icons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding-bottom: 20px;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .sidebar ul li {
+            display: block;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .sidebar ul li a {
+            color: #bc9864;
+            text-decoration: none;
+            font-size: 18px;
+            transition: color 0.2s;
+        }
+
+        .sidebar ul li a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+
+        .sidebar.active {
+            right: 0;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 2000;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        .footer {
+            bottom: 0px;
+            display: flex;
+            align-items: center;
+            background-color: black;
+            color: white;
+            padding: 10px 15px;
+            width: 100%;
+            position: fixed;
+	    margin-top: 100px;
+        }
+
+        .footer img {
+            width: 30px;
+            height: 30px;
+            margin: 3 10px;
+            vertical-align: center;
+        }
+
+@media (max-width: 768px) {
+  nav {
+    position: relative;
+    width: 100%;
+    height: auto;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 15px 10px;
+  }
+
+  nav h1 {
+    margin: 0;
+    font-size: 1.5rem;
+  }
+
+  nav a {
+    padding: 10px;
+    font-size: 0.9rem;
+    flex: 1;
+  }
+
+  main {
+    margin-left: 0;
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    margin: 100px auto 60px;
+    padding: 20px;
+    max-width: 95%;
+  }
+
+  main h2 {
+    font-size: 2rem;
+  }
+
+  main p {
+    font-size: 1rem;
+  }
+
+  footer.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    margin-left: 0;
+    left: 0;
+    padding: 6px;
+    font-size: 0.75rem;
+    background: rgba(0,0,0,0.9);
+  }
+
+  .footer-icons a {
+    font-size: 16px;
+  }
+}
+
+
+  </style>
+
+</head>
+<body>
+
+<div class="overlay" id="overlay">&#9776</div>
+
+
+<div>
+	<img src="1_20250906_215250_0000.JPG" alt="" class="img1">
+</div>
+<div>
+	<img src="2_20250906_215250_0001.JPG" alt="Second Image" class="img2">
+</div>
+<div>
+	<img src="nazzz_20250906_225355_0000.png" alt="Second Image" class="img3">
+</div>
+
+<header>
+    <div class="brand"><img src="logoforweb.png"></div>
+    <div class="hamburger" id="hamburger">&#9776;</div>
+</header>
+
+<nav class="sidebar" id="sidebar">
+    <ul>
+        <li><a href="riboninde.html">Home</a></li>
+        <li><a href="abouttttmo.html" class="active-link">About</a></li>
+        <li><a href="delicacies.html">Delicacies</a></li>
+        <li><a href="contact us.html">Gallery</a></li>
+    </ul>
+</nav>
+
+<nav class="footer">
+    <a href="https://www.facebook.com/princessangelribon"><img src="facebook_icon.jpg" alt="Facebook" style="width: 35px;">
+    </a>
+    <a href="https://www.instagram.com/yessesss.itsgel/"><img src="instagram_icon.jpg" alt="Instagram" style="width: 35px;"></a>
+    </a>
+    <a href="https://www.tiktok.com/@angel_ribon?_t=ZS-8zWHPKqdKlN&_r=1"><img src="tiktok_icon.jpg" alt="Tiktok" style="width: 35px;"></a>
+    </a>
+    <p>This website is for project purposes only.</p>
+</nav>
+
+<script>
+    const hamburger = document.getElementById("hamburger");
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("overlay");
+    const exploreBtn = document.getElementById("exploreBtn");
+    const aboutLink = document.getElementById("aboutLink");
+
+    hamburger.addEventListener("click", () => {
+        sidebar.classList.toggle("active");
+        overlay.classList.toggle("active");
+    });
+
+    overlay.addEventListener("click", () => {
+        sidebar.classList.remove("active");
+        overlay.classList.remove("active");
+    });
+
+</script>
+</body>
+</html>
